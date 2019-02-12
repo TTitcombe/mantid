@@ -323,12 +323,15 @@ void ISISEnergyTransfer::run() {
   reductionAlg->initialize();
   BatchAlgorithmRunner::AlgorithmRuntimeProps reductionRuntimeProps;
 
-  QString instName = getSelectedInstrument();
+  QString instName = getInstrumentConfiguration()->getInstrumentName();
 
   reductionAlg->setProperty("Instrument", instName.toStdString());
-  reductionAlg->setProperty("Analyser", getSelectedAnalyser().toStdString());
-  reductionAlg->setProperty("Reflection",
-                            getSelectedReflection().toStdString());
+  reductionAlg->setProperty(
+      "Analyser",
+      getInstrumentConfiguration()->getAnalyserName().toStdString());
+  reductionAlg->setProperty(
+      "Reflection",
+      getInstrumentConfiguration()->getReflectionName().toStdString());
 
   // Override the efixed for QENS spectrometers only
   QStringList qens;
@@ -496,7 +499,7 @@ void ISISEnergyTransfer::setInstrumentDefault() {
 
   if (instDetails["spectra-min"].isEmpty() ||
       instDetails["spectra-max"].isEmpty()) {
-    g_log.warning("Could not gather necessary data from parameter file.");
+    emit showMessageBox("Could not gather necessary data from parameter file.");
     return;
   }
 

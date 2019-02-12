@@ -85,10 +85,8 @@ protected:
   std::map<std::string, double>
   getRangesFromInstrument(QString instName = "", QString analyser = "",
                           QString reflection = "");
-  /// Get the selected instrument, analyser or reflection
-  QString getSelectedInstrument() const;
-  QString getSelectedAnalyser() const;
-  QString getSelectedReflection() const;
+  /// Get the instrument config widget
+  MantidWidgets::IndirectInstrumentConfig *getInstrumentConfiguration() const;
 
 private slots:
   void tabExecutionComplete(bool error);

@@ -150,8 +150,8 @@ ISISDiagnostics::~ISISDiagnostics() {}
 void ISISDiagnostics::setup() {}
 
 void ISISDiagnostics::run() {
-  QString suffix =
-      "_" + getSelectedAnalyser() + getSelectedReflection() + "_slice";
+  QString suffix = "_" + getInstrumentConfiguration()->getAnalyserName() +
+                   getInstrumentConfiguration()->getReflectionName() + "_slice";
   QString filenames = m_uiForm.dsInputFiles->getFilenames().join(",");
 
   std::vector<long> spectraRange;

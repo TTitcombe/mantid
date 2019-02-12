@@ -97,18 +97,13 @@ QMap<QString, QString> IndirectDataReductionTab::getInstrumentDetails() const {
 }
 
 /**
- * Returns the selected instrument, analyser or reflection
+ * Returns a pointer to the instrument configuration widget common to all tabs.
+ *
+ * @return Instrument config widget
  */
-QString IndirectDataReductionTab::getSelectedInstrument() const {
-  return m_idrUI->getSelectedInstrument();
-}
-
-QString IndirectDataReductionTab::getSelectedAnalyser() const {
-  return m_idrUI->getSelectedAnalyser();
-}
-
-QString IndirectDataReductionTab::getSelectedReflection() const {
-  return m_idrUI->getSelectedReflection();
+MantidWidgets::IndirectInstrumentConfig *
+IndirectDataReductionTab::getInstrumentConfiguration() const {
+  return m_idrUI->m_uiForm.iicInstrumentConfiguration;
 }
 
 /**
@@ -124,11 +119,11 @@ std::map<std::string, double> IndirectDataReductionTab::getRangesFromInstrument(
     QString instName, QString analyser, QString reflection) {
   // Get any unset parameters
   if (instName.isEmpty())
-    instName = getSelectedInstrument();
+    instName = getInstrumentConfiguration()->getInstrumentName();
   if (analyser.isEmpty())
-    analyser = getSelectedAnalyser();
+    analyser = getInstrumentConfiguration()->getAnalyserName();
   if (reflection.isEmpty())
-    reflection = getSelectedReflection();
+    reflection = getInstrumentConfiguration()->getReflectionName();
 
   std::map<std::string, double> ranges;
 

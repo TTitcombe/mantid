@@ -222,14 +222,13 @@ QString ISISCalibration::instrumentDetectorRangeString() const {
 }
 
 QString ISISCalibration::outputWorkspaceName() const {
-  const auto configuration = getInstrumentConfiguration();
   auto name = QFileInfo(m_uiForm.leRunNo->getFirstFilename()).baseName();
 
   if (m_uiForm.leRunNo->getFilenames().size() > 1)
     name += "_multi";
 
-  return name + QString::fromStdString("_") + configuration->getAnalyserName() +
-         configuration->getReflectionName();
+  return name + QString::fromStdString("_") + getSelectedAnalyser() +
+         getSelectedReflection();
 }
 
 QString ISISCalibration::resolutionDetectorRangeString() const {
@@ -728,15 +727,9 @@ ISISCalibration::resolutionAlgorithm(const QString &inputFiles) const {
   auto resAlg = AlgorithmManager::Instance().create("IndirectResolution", -1);
   resAlg->initialize();
   resAlg->setProperty("InputFiles", inputFiles.toStdString());
-  resAlg->setProperty(
-      "Instrument",
-      getInstrumentConfiguration()->getInstrumentName().toStdString());
-  resAlg->setProperty(
-      "Analyser",
-      getInstrumentConfiguration()->getAnalyserName().toStdString());
-  resAlg->setProperty(
-      "Reflection",
-      getInstrumentConfiguration()->getReflectionName().toStdString());
+  resAlg->setProperty("Instrument", getSelectedInstrument().toStdString());
+  resAlg->setProperty("Analyser", getSelectedAnalyser().toStdString());
+  resAlg->setProperty("Reflection", getSelectedReflection().toStdString());
   resAlg->setProperty("RebinParam", rebinString().toStdString());
   resAlg->setProperty("DetectorRange",
                       resolutionDetectorRangeString().toStdString());
@@ -760,15 +753,11 @@ IAlgorithm_sptr ISISCalibration::energyTransferReductionAlgorithm(
   auto reductionAlg =
       AlgorithmManager::Instance().create("ISISIndirectEnergyTransferWrapper");
   reductionAlg->initialize();
-  reductionAlg->setProperty(
-      "Instrument",
-      getInstrumentConfiguration()->getInstrumentName().toStdString());
-  reductionAlg->setProperty(
-      "Analyser",
-      getInstrumentConfiguration()->getAnalyserName().toStdString());
-  reductionAlg->setProperty(
-      "Reflection",
-      getInstrumentConfiguration()->getReflectionName().toStdString());
+  reductionAlg->setProperty("Instrument",
+                            getSelectedInstrument().toStdString());
+  reductionAlg->setProperty("Analyser", getSelectedAnalyser().toStdString());
+  reductionAlg->setProperty("Reflection",
+                            getSelectedReflection().toStdString());
   reductionAlg->setProperty("InputFiles", inputFiles.toStdString());
   reductionAlg->setProperty("SumFiles", m_uiForm.ckSumFiles->isChecked());
   reductionAlg->setProperty("OutputWorkspace",

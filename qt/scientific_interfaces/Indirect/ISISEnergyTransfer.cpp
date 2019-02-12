@@ -19,6 +19,7 @@ using namespace Mantid::API;
 using MantidQt::API::BatchAlgorithmRunner;
 
 namespace {
+Mantid::Kernel::Logger g_log("ISISEnergyTransfer");
 
 bool doesExistInADS(std::string const &workspaceName) {
   return AnalysisDataService::Instance().doesExist(workspaceName);
@@ -29,7 +30,7 @@ WorkspaceGroup_sptr getADSWorkspaceGroup(std::string const &workspaceName) {
       workspaceName);
 }
 
-std::string createRangeString(std::size_t const &from, std::size_t const &to) {
+std::string createRangeString(std::size_t from, std::size_t to) {
   return std::to_string(from) + "-" + std::to_string(to);
 }
 
@@ -322,15 +323,12 @@ void ISISEnergyTransfer::run() {
   reductionAlg->initialize();
   BatchAlgorithmRunner::AlgorithmRuntimeProps reductionRuntimeProps;
 
-  QString instName = getInstrumentConfiguration()->getInstrumentName();
+  QString instName = getSelectedInstrument();
 
   reductionAlg->setProperty("Instrument", instName.toStdString());
-  reductionAlg->setProperty(
-      "Analyser",
-      getInstrumentConfiguration()->getAnalyserName().toStdString());
-  reductionAlg->setProperty(
-      "Reflection",
-      getInstrumentConfiguration()->getReflectionName().toStdString());
+  reductionAlg->setProperty("Analyser", getSelectedAnalyser().toStdString());
+  reductionAlg->setProperty("Reflection",
+                            getSelectedReflection().toStdString());
 
   // Override the efixed for QENS spectrometers only
   QStringList qens;
@@ -498,7 +496,7 @@ void ISISEnergyTransfer::setInstrumentDefault() {
 
   if (instDetails["spectra-min"].isEmpty() ||
       instDetails["spectra-max"].isEmpty()) {
-    emit showMessageBox("Could not gather necessary data from parameter file.");
+    g_log.warning("Could not gather necessary data from parameter file.");
     return;
   }
 

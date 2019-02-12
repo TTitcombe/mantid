@@ -71,7 +71,7 @@ void IndirectTransmission::run() {
 
 bool IndirectTransmission::validate() {
   // Check if we have an appropriate instrument
-  QString currentInst = getInstrumentConfiguration()->getInstrumentName();
+  QString currentInst = getSelectedInstrument();
   if (currentInst != "IRIS" && currentInst != "OSIRIS")
     return false;
 

@@ -27,6 +27,7 @@ private:
                               std::string const &resolutionName,
                               std::string const &parameter) const;
   void loadSettings(const QSettings &settings) override;
+  void filterDataBySuffices(bool filter) override;
   void setBrowserWorkspace() override{};
 
   bool isErrorsEnabled();

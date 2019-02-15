@@ -30,6 +30,8 @@ WorkspaceGroup_sptr getADSWorkspaceGroup(std::string const &workspaceName) {
       workspaceName);
 }
 
+Mantid::Kernel::Logger g_log("ISISEnergyTransfer");
+
 std::string createRangeString(std::size_t from, std::size_t to) {
   return std::to_string(from) + "-" + std::to_string(to);
 }
@@ -499,7 +501,7 @@ void ISISEnergyTransfer::setInstrumentDefault() {
 
   if (instDetails["spectra-min"].isEmpty() ||
       instDetails["spectra-max"].isEmpty()) {
-    emit showMessageBox("Could not gather necessary data from parameter file.");
+    g_log.warning("Could not gather necessary data from parameter file.");
     return;
   }
 

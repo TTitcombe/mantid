@@ -23,7 +23,8 @@ namespace CustomInterfaces {
  */
 IndirectSymmetrise::IndirectSymmetrise(IndirectDataReduction *idrUI,
                                        QWidget *parent)
-    : IndirectDataReductionTab(idrUI, parent) {
+    : IndirectDataReductionTab(idrUI, parent),
+      m_inputFBExtensions({"_red.nxs"}), m_inputWSExtensions({"_red"}) {
   m_uiForm.setupUi(parent);
 
   int numDecimals = 6;
@@ -527,6 +528,13 @@ void IndirectSymmetrise::xRangeMaxChanged(double value) {
   } else if (from == negativeERaw) {
     m_dblManager->setValue(m_properties["EMin"], std::abs(value));
   }
+}
+
+void IndirectSymmetrise::setFileExtensionsByName(bool filter) {
+  m_uiForm.dsInput->setFBSuffixes(filter ? m_inputFBExtensions
+                                         : getAllowedExtensions());
+  m_uiForm.dsInput->setWSSuffixes(filter ? m_inputWSExtensions
+                                         : getAllowedExtensions());
 }
 
 /**

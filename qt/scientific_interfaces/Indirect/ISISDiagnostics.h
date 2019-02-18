@@ -78,6 +78,10 @@ private slots:
   void setPlotIsPlotting(bool plotting);
 
 private:
+  void setFileExtensionsByName(bool filter) override;
+
+  QStringList m_calibFBExtensions;
+  QStringList m_calibWSExtensions;
   Ui::ISISDiagnostics m_uiForm;
 };
 } // namespace CustomInterfaces

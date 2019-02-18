@@ -37,6 +37,7 @@ private:
   void run() override;
   bool validate() override;
   void loadSettings(const QSettings &settings) override;
+  void setFileExtensionsByName(bool filter) override;
 
   bool doValidation(bool silent = false);
 
@@ -56,6 +57,10 @@ private:
   getInstrumentParameter(Mantid::Geometry::Instrument_const_sptr instrument,
                          const std::string &parameterName);
 
+  QStringList m_sampleFBExtensions;
+  QStringList m_sampleWSExtensions;
+  QStringList m_containerFBExtensions;
+  QStringList m_containerWSExtensions;
   Ui::CalculatePaalmanPings m_uiForm;
 };
 

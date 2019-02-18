@@ -70,8 +70,7 @@ private slots:
   void setPlotIsPlotting(bool plotting);
 
 private:
-  Ui::ISISEnergyTransfer m_uiForm;
-
+  void setFileExtensionsByName(bool filter) override;
   std::pair<std::string, std::string> createMapFile(
       const std::string
           &groupType); ///< create the mapping file with which to group results
@@ -83,6 +82,11 @@ private:
       std::vector<std::size_t> const &customGroupingNumbers) const;
   QString validateDetectorGrouping() const;
   std::string getDetectorGroupingString() const;
+
+  QStringList m_calibFBExtensions;
+  QStringList m_calibWSExtensions;
+
+  Ui::ISISEnergyTransfer m_uiForm;
 };
 } // namespace CustomInterfaces
 } // namespace MantidQt

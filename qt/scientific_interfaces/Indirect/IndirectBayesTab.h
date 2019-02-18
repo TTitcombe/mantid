@@ -68,6 +68,9 @@ public:
   /// Base methods implemented in derived classes
   virtual void loadSettings(const QSettings &settings) = 0;
 
+  /// Prevent loading of data with incorrect naming
+  void filterInputData(bool filter);
+
 protected slots:
   /// Slot to update the guides when the range properties change
   virtual void updateProperties(QtProperty *prop, double val) = 0;
@@ -77,7 +80,11 @@ protected:
   void runPythonScript(const QString &pyInput);
   /// Tree of the properties
   QtTreePropertyBrowser *m_propTree;
+
+private:
+  virtual void setFileExtensionsByName(bool filter) = 0;
 };
+
 } // namespace CustomInterfaces
 } // namespace MantidQt
 

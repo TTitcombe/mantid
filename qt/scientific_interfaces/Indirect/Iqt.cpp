@@ -22,12 +22,6 @@ using namespace Mantid::API;
 namespace {
 Mantid::Kernel::Logger g_log("Iqt");
 
-QStringList const SAMPLE_FILE_EXTENTIONS({"_red.nxs", "_sqw.nxs"});
-QStringList const SAMPLE_WORKSPACE_EXTENTIONS({"_red", "_sqw"});
-QStringList const RESOLUTION_FILE_EXTENTIONS({"_red.nxs", "_sqw.nxs",
-                                              "_res.nxs"});
-QStringList const RESOLUTION_WORKSPACE_EXTENTIONS({"_red", "_sqw", "_res"});
-
 MatrixWorkspace_sptr getADSMatrixWorkspace(std::string const &workspaceName) {
   return AnalysisDataService::Instance().retrieveWS<MatrixWorkspace>(
       workspaceName);
@@ -115,7 +109,11 @@ namespace MantidQt {
 namespace CustomInterfaces {
 namespace IDA {
 Iqt::Iqt(QWidget *parent)
-    : IndirectDataAnalysisTab(parent), m_iqtTree(nullptr), m_iqtResFileType() {
+    : IndirectDataAnalysisTab(parent), m_iqtTree(nullptr), m_iqtResFileType(),
+      m_sampleFBExtensions({"_red.nxs", "_sqw.nxs"}),
+      m_sampleWSExtensions({"_red", "_sqw"}),
+      m_resolutionFBExtensions({"_red.nxs", "_sqw.nxs", "_res.nxs"}),
+      m_resolutionWSExtensions({"_red", "_sqw", "_res"}) {
   m_uiForm.setupUi(parent);
 }
 
@@ -184,7 +182,7 @@ void Iqt::setup() {
   connect(m_uiForm.spTiledPlotLast, SIGNAL(valueChanged(int)), this,
           SLOT(setTiledPlotLastPlot(int)));
 
-  filterDataBySuffices(true);
+  setFileExtensionsByName(true);
 }
 
 void Iqt::run() {
@@ -487,16 +485,15 @@ void Iqt::loadSettings(const QSettings &settings) {
   m_uiForm.dsResolution->readSettings(settings.group());
 }
 
-void Iqt::filterDataBySuffices(bool filter) {
-  if (filter) {
-    m_uiForm.dsInput->setFBSuffixes(SAMPLE_FILE_EXTENTIONS);
-    m_uiForm.dsInput->setWSSuffixes(SAMPLE_WORKSPACE_EXTENTIONS);
-    m_uiForm.dsResolution->setFBSuffixes(RESOLUTION_FILE_EXTENTIONS);
-    m_uiForm.dsResolution->setWSSuffixes(RESOLUTION_WORKSPACE_EXTENTIONS);
-  } else {
-    m_uiForm.dsInput->clearSuffices();
-    m_uiForm.dsResolution->clearSuffices();
-  }
+void Iqt::setFileExtensionsByName(bool filter) {
+  m_uiForm.dsInput->setFBSuffixes(filter ? m_sampleFBExtensions
+                                         : getAllowedExtensions());
+  m_uiForm.dsInput->setWSSuffixes(filter ? m_sampleWSExtensions
+                                         : getAllowedExtensions());
+  m_uiForm.dsResolution->setFBSuffixes(filter ? m_resolutionFBExtensions
+                                              : getAllowedExtensions());
+  m_uiForm.dsResolution->setWSSuffixes(filter ? m_resolutionWSExtensions
+                                              : getAllowedExtensions());
 }
 
 void Iqt::plotInput(const QString &wsname) {

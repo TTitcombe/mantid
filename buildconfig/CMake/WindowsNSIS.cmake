@@ -59,17 +59,19 @@ mark_as_advanced(WINDOWS_DEPLOYMENT_TYPE)
 ###########################################################################
 # MSVC runtime & openmp libs for Visual Studio
 # They are in the locations defined by the VS***COMNTOOLS environment variable
-set ( _RT 140 )
-file ( TO_CMAKE_PATH $ENV{VS${_RT}COMNTOOLS}../../VC/redist/x64 X64_REDIST_DIR )
+set ( _RT_REQUIRED 140 )
+set ( _RT_INSTALLED 141 )
+#file ( TO_CMAKE_PATH $ENV{VS${_RT}COMNTOOLS}../../VC/redist/x64 X64_REDIST_DIR )
+set ( X64_REDIST_DIR ${MSVC_IDE_LOCATION}/../../VC/Redist/MSVC/14.16.27012/x64 )
 # CRT libraries
-set ( CRT_DLLS concrt${_RT}.dll msvcp${_RT}.dll vccorlib${_RT}.dll vcruntime${_RT}.dll )
+set ( CRT_DLLS concrt${_RT_REQUIRED}.dll msvcp${_RT_REQUIRED}.dll vccorlib${_RT_REQUIRED}.dll vcruntime${_RT_REQUIRED}.dll )
 foreach( DLL ${CRT_DLLS} )
-  install ( FILES ${X64_REDIST_DIR}/Microsoft.VC${_RT}.CRT/${DLL} DESTINATION bin )
+  install ( FILES ${X64_REDIST_DIR}/Microsoft.VC${_RT_INSTALLED}.CRT/${DLL} DESTINATION bin )
 endforeach()
 # OpenMP
-set ( OMP_DLLS vcomp${_RT}.dll )
+set ( OMP_DLLS vcomp${_RT_REQUIRED}.dll )
 foreach( DLL ${OMP_DLLS} )
-    install ( FILES ${X64_REDIST_DIR}/Microsoft.VC${_RT}.OpenMP/${DLL} DESTINATION bin )
+    install ( FILES ${X64_REDIST_DIR}/Microsoft.VC${_RT_INSTALLED}.OpenMP/${DLL} DESTINATION bin )
 endforeach()
 
 # Other third party dependencies

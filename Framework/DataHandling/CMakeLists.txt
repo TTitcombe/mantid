@@ -118,6 +118,7 @@
 	src/LoadSassena.cpp
 	src/LoadSpec.cpp
 	src/LoadSpice2D.cpp
+	src/LoadHFIRSANS.cpp
 	src/LoadSpiceAscii.cpp
 	src/LoadSpiceXML2DDet.cpp
 	src/LoadSwans.cpp
@@ -311,6 +312,7 @@ set ( INC_FILES
 	inc/MantidDataHandling/LoadSassena.h
 	inc/MantidDataHandling/LoadSpec.h
 	inc/MantidDataHandling/LoadSpice2D.h
+	inc/MantidDataHandling/LoadHFIRSANS.h
 	inc/MantidDataHandling/LoadSpiceAscii.h
 	inc/MantidDataHandling/LoadSpiceXML2DDet.h
 	inc/MantidDataHandling/LoadStl.h
@@ -499,6 +501,7 @@ set ( TEST_FILES
 	LoadSaveAsciiTest.h
 	LoadSpecTest.h
 	LoadSpice2dTest.h
+	LoadHFIRSANSTest.h
 	LoadSpiceAsciiTest.h
 	LoadSpiceXML2DDetTest.h
 	LoadSwansTest.h

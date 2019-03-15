@@ -138,9 +138,8 @@ public:
   std::vector<GSLVector> getParams() const {
     std::vector<GSLVector> res;
     res.reserve(m_params.size());
-    for (auto &it : m_params) {
-      res.push_back(it.second);
-    }
+    std::transform(m_params.cbegin(), m_params.cend(), std::back_inserter(res),
+                   [](const auto &element) { return element.second; });
     return res;
   }
 };

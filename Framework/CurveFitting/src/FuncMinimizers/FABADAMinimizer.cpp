@@ -996,11 +996,9 @@ void FABADAMinimizer::calculateConvChainAndBestParameters(
     }
 
     // Calculate the reducedConvergedChain for the cost fuction.
-    auto first = m_chain[m_nParams].begin() + m_convPoint;
-    auto last = m_chain[m_nParams].end();
-    std::vector<double> convChain(first, last);
     for (size_t k = 1; k < convLength; ++k) {
-      reducedChain[m_nParams].push_back(convChain[nSteps * k]);
+      reducedChain[m_nParams].push_back(
+          m_chain[m_nParams][nSteps * k + m_convPoint]);
     }
 
     // Calculate the position of the minimum Chi square value
@@ -1010,13 +1008,9 @@ void FABADAMinimizer::calculateConvChainAndBestParameters(
 
     // Calculate the parameter value and the errors
     for (size_t j = 0; j < m_nParams; ++j) {
-      auto first = m_chain[j].begin() + m_convPoint;
-      auto last = m_chain[j].end();
-      // reducedConvergedChain calculated for each parameter
-      std::vector<double> convChain(first, last);
       // Obs: Starts at 1 (0 already added)
       for (size_t k = 1; k < convLength; ++k) {
-        reducedChain[j].push_back(convChain[nSteps * k]);
+        reducedChain[j].push_back(m_chain[j][m_convPoint + nSteps * k]);
       }
       // best fit parameters taken
       bestParameters[j] =

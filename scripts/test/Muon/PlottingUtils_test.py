@@ -6,12 +6,8 @@
 # SPDX - License - Identifier: GPL - 3.0 +
 import unittest
 
+from mantid.py3compat import mock
 from Muon.GUI.ElementalAnalysis.Plotting import plotting_utils as putils
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
 
 class PlottingUtilsTest(unittest.TestCase):

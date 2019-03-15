@@ -1,10 +1,7 @@
 import unittest
-import sys
+
 from ErrorReporter.error_report_presenter import ErrorReporterPresenter
-if sys.version_info.major > 2:
-    from unittest import mock
-else:
-    import mock
+from mantid.py3compat import mock
 
 
 class ErrorReportPresenterTest(unittest.TestCase):

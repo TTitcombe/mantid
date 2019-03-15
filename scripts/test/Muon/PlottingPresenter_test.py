@@ -9,14 +9,10 @@ import unittest
 import os
 os.environ["QT_API"] = "pyqt"  # noqa E402
 
+from mantid.py3compat import mock
 from Muon.GUI.ElementalAnalysis.Plotting.plotting_presenter import PlotPresenter
 from Muon.GUI.ElementalAnalysis.Plotting.plotting_view import PlotView
 
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
 # simple class to mock QDialogs
 

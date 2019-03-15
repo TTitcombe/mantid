@@ -135,9 +135,9 @@ std::pair<double, double> cylinderTwoThetaRange(
         geometry.centreOfBottomBase +
         (basis1 * std::cos(angles[i]) + basis2 * std::sin(angles[i])) *
             geometry.radius;
-    for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
       const auto point = basePoint + geometry.axis * (0.5 * geometry.height *
-                                                      static_cast<double>(i));
+                                                      static_cast<double>(j));
       const auto current = twoThetaFromLocalPoint(
           detInfo, detInfoIndex, samplePos, beamDir, std::move(point));
       minTwoTheta = std::min(minTwoTheta, current);

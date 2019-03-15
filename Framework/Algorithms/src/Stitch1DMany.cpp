@@ -267,8 +267,10 @@ void Stitch1DMany::exec() {
       // Iterate over each period
       for (size_t i = 0; i < m_inputWSMatrix.front().size(); ++i) {
         std::vector<MatrixWorkspace_sptr> inMatrix;
-        for (const auto &ws : m_inputWSMatrix)
-          inMatrix.emplace_back(ws[i]);
+        inMatrix.reserve(m_inputWSMatrix.size());
+        std::transform(m_inputWSMatrix.cbegin(), m_inputWSMatrix.cend(),
+                       std::back_inserter(inMatrix),
+                       [i](const auto &ws) { return ws[i]; });
 
         outName = groupName;
         Workspace_sptr outStitchedWS;

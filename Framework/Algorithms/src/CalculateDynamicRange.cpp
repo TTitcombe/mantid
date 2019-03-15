@@ -145,9 +145,8 @@ void CalculateDynamicRange::exec() {
       }
       if (!dets.empty()) {
         detIDs.reserve(dets.size());
-        for (const auto &det : dets) {
-          detIDs.emplace_back(det->getID());
-        }
+        std::transform(dets.cbegin(), dets.cend(), std::back_inserter(detIDs),
+                       [](const auto &detector) { return detector->getID(); });
         const auto indices = workspace->getIndicesFromDetectorIDs(detIDs);
         calculateQMinMax(workspace, indices, compName);
       }

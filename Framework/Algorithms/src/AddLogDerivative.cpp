@@ -102,8 +102,8 @@ Mantid::Kernel::TimeSeriesProperty<double> *AddLogDerivative::makeDerivative(
   DateAndTime start = input->nthTime(0);
   std::vector<DateAndTime> timeFull;
   timeFull.reserve(times.size());
-  for (double time : times)
-    timeFull.push_back(start + time);
+  std::transform(times.cbegin(), times.cend(), std::back_inserter(timeFull),
+                 [start](const auto time) { return start + time; });
 
   // Create the TSP out of it
   auto out = new TimeSeriesProperty<double>(name);

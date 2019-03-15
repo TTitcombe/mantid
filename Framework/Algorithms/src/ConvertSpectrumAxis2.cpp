@@ -238,9 +238,9 @@ MatrixWorkspace_sptr ConvertSpectrumAxis2::createOutputWorkspace(
         create<MatrixWorkspace>(*inputWS, m_indexMap.size(), hist);
     std::vector<double> axis;
     axis.reserve(m_indexMap.size());
-    for (const auto &it : m_indexMap) {
-      axis.emplace_back(it.first);
-    }
+    std::transform(m_indexMap.cbegin(), m_indexMap.cend(),
+                   std::back_inserter(axis),
+                   [](const auto &element) { return element.first; });
     newAxis = new NumericAxis(std::move(axis));
   } else {
     // If there is no reordering we can simply clone.

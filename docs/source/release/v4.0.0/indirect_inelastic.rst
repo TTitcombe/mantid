@@ -119,6 +119,7 @@ Bugfixes
 - The expression for the Fit type :ref:`MSDYi <func-MSDYi>` in MSDFit was incorrect and has now been
   corrected.
 - The x-axis labels in the output plots for MSDFit are now correct.
+<<<<<<< HEAD
 - An unexpected error is now prevented when clicking *Plot Guess* from the *Display* combo box in
   ConvFit without first loading a reduced file.
 - The output workspace ending with *_Results* now contains workspaces with corrected names which
@@ -135,6 +136,7 @@ Bugfixes
   fixed.
 - A bug causing the preview plot in Elwin not to update when changing the selected workspace has been
   fixed.
+- Fixed an issue on FQFit where a workspace with only one data point could be loaded.
 
 
 Data Corrections Interface

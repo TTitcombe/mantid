@@ -143,9 +143,8 @@ void LoadSpec::readLine(const std::string &line,
     using tokenizer = Mantid::Kernel::StringTokenizer;
     const std::string sep = " ";
     tokenizer tok(line, sep, Mantid::Kernel::StringTokenizer::TOK_IGNORE_EMPTY);
-    for (const auto &beg : tok) {
-      buffer.push_back(std::stod(beg));
-    }
+    std::transform(tok.cbegin(), tok.cend(), std::back_inserter(buffer),
+                   [](const auto &beg) { return std::stod(beg); });
   }
 }
 

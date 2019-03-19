@@ -493,10 +493,10 @@ std::size_t numEvents(::NeXus::File &file, bool &hasTotalCounts,
         auto info = file.getInfo();
         file.closeData();
         if (info.type == NeXus::UINT64) {
-          uint64_t numEvents;
-          file.readData("total_counts", numEvents);
+          uint64_t eventCount;
+          file.readData("total_counts", eventCount);
           hasTotalCounts = true;
-          return numEvents;
+          return eventCount;
         }
       } catch (::NeXus::Exception &) {
       }
@@ -859,14 +859,9 @@ void LoadEventNexus::loadEvents(API::Progress *const prog,
   if ((!someBanks.empty()) && (!monitors)) {
     // check that all of the requested banks are in the file
     for (auto &someBank : someBanks) {
-      bool foundIt = false;
-      for (auto &bankName : bankNames) {
-        if (bankName == someBank + "_events") {
-          foundIt = true;
-          break;
-        }
-      }
-      if (!foundIt) {
+      const auto found =
+          std::find(bankNames.cbegin(), bankNames.cend(), someBank + "_events");
+      if (found == bankNames.cend()) {
         throw std::invalid_argument("No entry named '" + someBank +
                                     "' was found in the .NXS file.\n");
       }
@@ -874,13 +869,14 @@ void LoadEventNexus::loadEvents(API::Progress *const prog,
 
     // change the number of banks to load
     bankNames.clear();
+    bankNames.reserve(someBanks.size());
     for (auto &someBank : someBanks)
-      bankNames.push_back(someBank + "_events");
+      bankNames.emplace_back(someBank + "_events");
 
     // how many events are in a bank
     bankNumEvents.clear();
-    bankNumEvents.assign(someBanks.size(),
-                         1); // TODO this equally weights the banks
+    // TODO this equally weights the banks
+    bankNumEvents.assign(someBanks.size(), 1);
 
     if (!SingleBankPixelsOnly)
       someBanks.clear(); // Marker to load all pixels

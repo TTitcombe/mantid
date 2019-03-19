@@ -271,13 +271,15 @@ void UpdateInstrumentFromFile::updateFromAscii(const std::string &filename) {
     std::vector<size_t> indices;
     if (isSpectrum) {
       if (auto group = dynamic_cast<const Geometry::DetectorGroup *>(det)) {
-        for (const auto detID : group->getDetectorIDs())
-          indices.push_back(detectorInfo.indexOf(detID));
+        const auto detIDs = group->getDetectorIDs();
+        std::transform(
+            detIDs.cbegin(), detIDs.cend(), std::back_inserter(indices),
+            [&detectorInfo](detid_t id) { return detectorInfo.indexOf(id); });
       } else {
-        indices.push_back(detectorInfo.indexOf(det->getID()));
+        indices.emplace_back(detectorInfo.indexOf(det->getID()));
       }
     } else {
-      indices.push_back(index);
+      indices.emplace_back(index);
     }
 
     // Special cases for detector r,t,p. Everything else is
@@ -301,8 +303,8 @@ void UpdateInstrumentFromFile::updateFromAscii(const std::string &filename) {
       else if (i == header.phiColIdx)
         phi = value;
       else if (header.detParCols.count(i) == 1) {
-        for (const auto index : indices) {
-          auto id = detectorInfo.detector(index).getComponentID();
+        for (const auto detIndex : indices) {
+          auto id = detectorInfo.detector(detIndex).getComponentID();
           pmap.addDouble(id, header.colToName[i], value);
         }
       }
@@ -329,8 +331,8 @@ void UpdateInstrumentFromFile::updateFromAscii(const std::string &filename) {
     if (header.phiColIdx == 0 || m_ignorePhi)
       phi = p;
 
-    for (const auto index : indices)
-      setDetectorPosition(detectorInfo, index, static_cast<float>(R),
+    for (const auto detIndex : indices)
+      setDetectorPosition(detectorInfo, detIndex, static_cast<float>(R),
                           static_cast<float>(theta), static_cast<float>(phi));
   }
 }

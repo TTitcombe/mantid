@@ -68,9 +68,8 @@ void RemoveLogs::exec() {
   std::vector<std::string> keepLogs = getProperty("KeepLogs");
   std::vector<std::string> logNames;
   logNames.reserve(logData.size());
-  for (const auto property : logData) {
-    logNames.push_back(property->name());
-  }
+  std::transform(logData.cbegin(), logData.cend(), std::back_inserter(logNames),
+                 [](auto property) { return property->name(); });
   for (const auto &name : logNames) {
     auto location = std::find(keepLogs.cbegin(), keepLogs.cend(), name);
     if (location == keepLogs.cend()) {

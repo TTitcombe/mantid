@@ -210,9 +210,10 @@ std::vector<double> LoadSwans::loadMetaData() {
           line, "\t ",
           Mantid::Kernel::StringTokenizer::TOK_TRIM |
               Mantid::Kernel::StringTokenizer::TOK_IGNORE_EMPTY);
-      for (const auto &token : tokenizer) {
-        metadata.push_back(boost::lexical_cast<double>(token));
-      }
+      metadata.reserve(tokenizer.size());
+      std::transform(
+          tokenizer.cbegin(), tokenizer.cend(), std::back_inserter(metadata),
+          [](const auto &token) { return boost::lexical_cast<double>(token); });
     }
   }
   if (metadata.size() < 6) {

@@ -233,8 +233,11 @@ size_t EventWorkspaceCollection::getNumberEvents() const {
 
 void EventWorkspaceCollection::setIndexInfo(
     const Indexing::IndexInfo &indexInfo) {
-  for (auto &ws : m_WsVec)
-    ws = create<EventWorkspace>(*ws, indexInfo, HistogramData::BinEdges(2));
+  const HistogramData::BinEdges edges(2);
+  std::transform(m_WsVec.cbegin(), m_WsVec.cend(), m_WsVec.begin(),
+                 [&indexInfo, &edges](auto &ws) {
+                   return create<EventWorkspace>(*ws, indexInfo, edges);
+                 });
 }
 
 void EventWorkspaceCollection::setInstrument(

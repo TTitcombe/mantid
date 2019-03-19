@@ -315,9 +315,10 @@ void LoadNexusLogs::exec() {
       file.openPath("/" + entry_name);
       entries = file.getEntries();
       std::string eventEntry;
-      const auto found = std::find_if(entries.cbegin(), entries.cend(), [](const auto &entry) {
-        return entry.second == "NXevent_data";
-      });
+      const auto found =
+          std::find_if(entries.cbegin(), entries.cend(), [](const auto &entry) {
+            return entry.second == "NXevent_data";
+          });
       if (found != entries.cend()) {
         eventEntry = found->first;
       }

@@ -1064,8 +1064,10 @@ void LoadRawHelper::calculateWorkspacesizes(
                  // in the min& max range
           // so find those  monitors  count and calculate the workspace specs
           specnum_t monCounter = 0;
-          for (auto itr = m_spec_list.begin(); itr != m_spec_list.end(); ++itr) {
-            const auto monitr = find(monitorSpecList.begin(), monitorSpecList.end(), *itr);
+          for (auto itr = m_spec_list.begin(); itr != m_spec_list.end();
+               ++itr) {
+            const auto monitr =
+                find(monitorSpecList.begin(), monitorSpecList.end(), *itr);
             if (monitr != monitorSpecList.end())
               ++monCounter;
           }

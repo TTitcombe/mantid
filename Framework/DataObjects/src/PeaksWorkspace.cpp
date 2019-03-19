@@ -173,9 +173,8 @@ void PeaksWorkspace::removePeaks(std::vector<int> badPeaks) {
       std::remove_if(peaks.begin(), peaks.end(), [&ip, badPeaks](Peak &pk) {
         (void)pk;
         ip++;
-        return std::any_of(badPeaks.cbegin(), badPeaks.cend(), [ip](int badPeak){
-          return badPeak == ip;
-        });
+        return std::any_of(badPeaks.cbegin(), badPeaks.cend(),
+                           [ip](int badPeak) { return badPeak == ip; });
       });
   peaks.erase(it, peaks.end());
 }
